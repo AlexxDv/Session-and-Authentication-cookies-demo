@@ -35,7 +35,7 @@ app.post('/login', (req, res) => {
 
     if (username == "Ivan" && password == "peti") {
         const authData = {
-            username: Ivan,
+            username: "Ivan",
         }
         res.cookie('auth', JSON.stringify(authData));
         res.redirect('/');
@@ -45,6 +45,7 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/profile', (req, res) => {
+    
     const authData = req.cookies['auth'];
     if (!authData) {
         return res.status(401).end();
