@@ -22,6 +22,7 @@ app.get('/', (req, res) => {
     <p><a href="/login">Login</a></p>
     <p><a href="/register">Register</a></p>
     <p><a href="/profile">Profile</a></p>
+    <p><a href="/logout">Log Out</a></p>
 
     `)
 })
@@ -53,6 +54,8 @@ app.post('/login', async (req, res) => {
         res.cookie('auth', JSON.stringify(authData));
         req.session.username = user.username;
         req.session.privateInfo = user.password;
+
+
         return res.redirect('/');
 
     } catch (err) {
@@ -63,7 +66,10 @@ app.post('/login', async (req, res) => {
     }
 });
 
-
+app.get('/logout', (req, res) => {
+    res.clearCookie('auth')
+    res.redirect('/');
+})
 
 
 app.get("/register", (req, res) => {
