@@ -1,10 +1,17 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const expressSesion = require('express-sesion');
 
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser())
+app.use(expressSesion({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}))
 
 app.get('/', (req, res) => {
     res.send(`
@@ -38,6 +45,8 @@ app.post('/login', (req, res) => {
             username: "Ivan",
         }
         res.cookie('auth', JSON.stringify(authData));
+        req.session.username = "Ivan";
+        req.session.privateInfo = "Some Private Info";
         res.redirect('/');
     }
 
@@ -45,7 +54,7 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/profile', (req, res) => {
-    
+
     const authData = req.cookies['auth'];
     if (!authData) {
         return res.status(401).end();
@@ -53,7 +62,7 @@ app.get('/profile', (req, res) => {
 
     const { username } = JSON.parse(authData);
 
-    console.log(username);
+    console.log(req.session);
 
     res.send(`
     <h2>Hello - ${username}</h2>
