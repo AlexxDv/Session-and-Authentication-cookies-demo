@@ -17,11 +17,27 @@ exports.registerUser = async (username, password) => {
     const salt = await bcrypt.genSalt(10);
     const hach = await bcrypt.hash(password, salt)
 
-    db.push({
+    db.users.push({
         username,
         password: hach,
 
     });
 
     await saveDb();
+};
+
+exports.loginUser = async (username, password) => {
+    const user = db.users.find(x => x.username === username)
+
+    if (!user) {
+        throw "No such username or password"
+    }
+
+    const isAuth = await bcrypt.compare(password, user.password)
+
+    if (!isAuth) {
+        throw "No such username or password"
+    }
+
+    return user;
 }

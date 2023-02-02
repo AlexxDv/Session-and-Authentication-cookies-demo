@@ -2,7 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const expressSession = require("express-session");
 
-
+const dataService = require("./dataService")
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
     <h1>Hello</h1>
 
     <p><a href="/login">Login</a></p>
+    <p><a href="/register">Register</a></p>
     <p><a href="/profile">Profile</a></p>
 
     `)
@@ -40,23 +41,32 @@ app.get('/login', (req, res) => {
     `)
 })
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
-    if (username == "Ivan" && password == "peti") {
+    try {
+        const user = await dataService.loginUser(username, password)
         const authData = {
-            username: "Ivan",
+            username: user.username,
         }
+
         res.cookie('auth', JSON.stringify(authData));
-        req.session.username = "Ivan";
-        req.session.privateInfo = "Some Private Info";
-        res.redirect('/');
+        req.session.username = user.username;
+        req.session.privateInfo = user.password;
+        return res.redirect('/');
+
+    } catch (err) {
+        console.log();
+
+        res.status(401).end()
+
     }
+});
 
-    return res.status(401).end()
-})
 
-app.get("register", (req, res) => {
+
+
+app.get("/register", (req, res) => {
     res.send(`
     <h1>Sign Up</h1>
     <form method="POST">
@@ -66,16 +76,20 @@ app.get("register", (req, res) => {
         <label for="password">Password</label>
         <input type="password" id="password" name="password" />
 
-        <input type="submit" value="login" />
+        <input type="submit" value="register" />
     </form>
     `)
 
 })
 
-app.post('/register', (req, res) => {
+app.post('/register', async (req, res) => {
     const { username, password } = req.body;
 
-} )
+    await dataService.registerUser(username, password)
+
+    res.redirect('/login');
+
+})
 
 app.get('/profile', (req, res) => {
 

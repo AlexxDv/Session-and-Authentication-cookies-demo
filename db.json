@@ -1,3 +1,8 @@
 {
-    "users": []
+  "users": [
+    {
+      "username": "Alex",
+      "password": "$2b$10$FTVvdwwPmOf25sBaZrEZgOS4REqVW/LnbrVyq6d.m4UvkpXKzCWK6"
+    }
+  ]
 }
