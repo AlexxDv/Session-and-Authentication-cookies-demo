@@ -1,7 +1,11 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
+
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
+
+app.use(cookieParser())
 
 app.get('/login', (req, res) => {
     res.send(`
@@ -25,4 +29,8 @@ app.post('/login', (req, res) => {
     }
 
     res.status(401).end()
+})
+
+app.get('/profile', (req, res) => {
+
 })
