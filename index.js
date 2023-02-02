@@ -8,7 +8,7 @@ app.use(cookieParser())
 
 app.get('/', (req, res) => {
     res.send(`
-    <h1>Hello Ivan</h1>
+    <h1>Hello</h1>
 
     <p><a href="/login">Login</a></p>
     <p><a href="/profile">Profile</a></p>
@@ -45,7 +45,18 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/profile', (req, res) => {
+    const authData = req.cookies['auth'];
+    if (!authData) {
+        return res.status(401).end();
+    }
 
+    const { username } = JSON.parse(authData);
+
+    console.log(username);
+
+    res.send(`
+    <h2>Hello - ${username}</h2>
+    `)
 })
 
 app.listen(5000, () => console.log('Server is listening on port 5000'));
