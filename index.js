@@ -41,7 +41,7 @@ app.post('/login', (req, res) => {
         res.redirect('/');
     }
 
-    res.status(401).end()
+    return res.status(401).end()
 })
 
 app.get('/profile', (req, res) => {
