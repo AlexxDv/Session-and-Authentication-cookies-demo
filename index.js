@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const expressSession = require("express-session");
 
+
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 
 app.get('/login', (req, res) => {
     res.send(`
+    <h1>Sign In</h1>
     <form method="POST">
         <label for="username">Username</label>
         <input type="text" id="username" name="username" />
@@ -45,7 +47,7 @@ app.post('/login', (req, res) => {
         const authData = {
             username: "Ivan",
         }
-        res.cookie('auth', JSON.stringify(authData)); 
+        res.cookie('auth', JSON.stringify(authData));
         req.session.username = "Ivan";
         req.session.privateInfo = "Some Private Info";
         res.redirect('/');
@@ -53,6 +55,27 @@ app.post('/login', (req, res) => {
 
     return res.status(401).end()
 })
+
+app.get("register", (req, res) => {
+    res.send(`
+    <h1>Sign Up</h1>
+    <form method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" />
+
+        <input type="submit" value="login" />
+    </form>
+    `)
+
+})
+
+app.post('/register', (req, res) => {
+    const { username, password } = req.body;
+
+} )
 
 app.get('/profile', (req, res) => {
 
