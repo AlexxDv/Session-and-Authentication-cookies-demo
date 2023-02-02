@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
-
 app.use(cookieParser())
 
 app.get('/', (req, res) => {
@@ -48,3 +47,5 @@ app.post('/login', (req, res) => {
 app.get('/profile', (req, res) => {
 
 })
+
+app.listen(5000, () => console.log('Server is listening on port 5000'));
